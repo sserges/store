@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react'
-import { products } from './productsStore'
+import { products, getProductData } from './productsStore'
 
 export const CartContext = createContext({
   items: [],
@@ -53,8 +53,34 @@ export function CartProvider({ children }) {
     )
   }
 
+  function removeOneFromCart(id) {
+    const quantity = getProductQuantity(id)
+
+    if (quantity === 1) {
+      deleteFromCart(id)
+    } else {
+      setCartProducts(
+        cartProducts.map((product) =>
+          product.id === id
+            ? { ...product, quantity: product.quantity - 1 }
+            : product
+        )
+      )
+    }
+  }
+
+  function getTotalCost() {
+    let totalCost = 0
+    cartProducts.forEach((cartItem) => {
+      const productData = getProductData(cartItem.id)
+      totalCost += productData.price * cartItem.quantity
+    })
+
+    return totalCost
+  }
+
   const contextValue = {
-    items: cartproducts,
+    items: cartProducts,
     getProductQuantity,
     addOneToCart,
     removeOneFromCart,
