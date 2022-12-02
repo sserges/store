@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react'
-import { products, getProductData } from './productsStore'
+import { getProductData } from './productsStore'
 
 export const CartContext = createContext({
   items: [],
@@ -92,3 +92,5 @@ export function CartProvider({ children }) {
     <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
   )
 }
+
+export default CartProvider
